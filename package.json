@@ -1,0 +1,27 @@
+{
+  "name": "webpack-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node -r ts-node/register let_to_var.ts",
+    "browser": "node -r ts-node/register --inspect-brk let_to_var.ts",
+    "--inspect-brk":  "使用浏览器方便调试"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/generator": "^7.12.11",
+    "@babel/parser": "^7.12.11",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/traverse": "^7.12.12",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.1.12",
+    "@types/babel__generator": "^7.6.2",
+    "@types/babel__preset-env": "^7.9.1",
+    "@types/babel__traverse": "^7.11.0",
+    "@types/node": "^14.14.20"
+  }
+}
