@@ -4,10 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "aa": "node -r ts-node/register",
-    "dev": "node -r ts-node/register let_to_var.ts",
+    "run": "node -r ts-node/register",
     "browser": "node -r ts-node/register --inspect-brk let_to_var.ts",
-    "--inspect-brk":  "使用浏览器方便调试"
+    "--inspect-brk":  "使用浏览器方便调试（这是注释）"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
