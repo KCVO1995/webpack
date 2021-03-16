@@ -5,18 +5,16 @@ import traverse from '@babel/traverse';
 import babel = require('@babel/core');
 
 // 设置根目录
-const projectRoot = resolve(__dirname, 'project3_circular');
+const projectRoot = resolve(__dirname, '../project3_circular');
 // 类型声明
-type DepRelation = {
-  [key: string]: { deps: string[], code: string }
-}
+type DepRelation = { key: string, deps: string[], code: string }[]
 // 初始化一个空的 depRelation 用于收集数据
-const depRelation: DepRelation = {};
+const depRelation: DepRelation = [];
 
 const collectCodeAndDeps = (filePath: string) => {
   // 文件的项目路径 如 index.js
   const key = getProjectPath(filePath);
-  if (Object.keys(depRelation).includes(key)) {
+  if (depRelation.find(i => i.key === key)) {
     console.warn(`duplicated dependency: ${key}`);
     return;
   }
@@ -25,18 +23,19 @@ const collectCodeAndDeps = (filePath: string) => {
   const {code: es5Code} = babel.transformSync(code, {
     presets: ['@babel/preset-env']
   });
-  depRelation[key] = {deps: [], code: es5Code};
+  const item = { key, deps: [], code: es5Code }
+  depRelation.push(item);
   // 将代码转化位 AST
   const ast = parse(code, {sourceType: 'module'});
   traverse(ast, {
-    enter: item => {
-      if (item.node.type === 'ImportDeclaration') {
+    enter: path => {
+      if (path.node.type === 'ImportDeclaration') {
         // path.node.source.value 目录往往是一个相对目录，如 ./a3.js， 需要先把他转换为一个绝对路径
-        const depAbsolutePath = resolve(dirname(filePath), item.node.source.value);
+        const depAbsolutePath = resolve(dirname(filePath), path.node.source.value);
         // 然后转为项目路径
         const depProjectPath = getProjectPath(depAbsolutePath);
         // 把依赖写进 depRelation
-        depRelation[key].deps.push(depProjectPath);
+        item.deps.push(depProjectPath)
         // 递归
         collectCodeAndDeps(depAbsolutePath);
       }
@@ -45,7 +44,7 @@ const collectCodeAndDeps = (filePath: string) => {
 };
 
 const getProjectPath = (filePath: string) => {
-  return relative(projectRoot, filePath);
+  return relative(projectRoot, filePath).replace(/\\/g, '/');
 };
 
 // 将入口文件的绝对路径传入函数, 如 D:\demo\xxx\index.js

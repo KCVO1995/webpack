@@ -1,6 +1,9 @@
 import b from './b.js'
 const a = {
-  value: b + 1,
+  value: 'a',
+  getB() {
+    return b.value + ' from b.js'
+  }
 }
 
 export default a

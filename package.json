@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "aa": "node -r ts-node/register",
     "dev": "node -r ts-node/register let_to_var.ts",
     "browser": "node -r ts-node/register --inspect-brk let_to_var.ts",
     "--inspect-brk":  "使用浏览器方便调试"
