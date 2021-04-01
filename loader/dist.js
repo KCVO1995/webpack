@@ -69,11 +69,9 @@ exports["default"] = _default;
       code: function(require, module, exports){
         "use strict";
 
-var str = "body {\r\n  color: red;\r\n}\r\n";
-
 if (document) {
   var style = document.createElement('style');
-  style.innerHTML = str;
+  style.innerHTML = "\n      const str = \"body {\\r\\n  color: red;\\r\\n}\\r\\n\"\n      module.exports str\n    ";
   document.head.appendChild(style);
 }
       }
